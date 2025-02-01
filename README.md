@@ -8,7 +8,7 @@ A lightweight file versioning system that automatically creates backups of files
 - Simple process management with PID tracking
 - Easy to use start/stop/status commands
 - Non-intrusive background operation
-- Useful in cworking with AI-based code editors
+- Useful in working with AI-based code editors
 - Makes sure that your code is always backed up after code editor makes changes
 
 ## Prerequisites
@@ -21,15 +21,17 @@ sudo apt-get install inotify-tools
 sudo yum install inotify-tools
 ```
 
-## Quick Setup
+## Installation
 
-For quick setup in your target directory, you can use the provided setup script:
+### Option 1: Quick Setup (Recommended)
+For quick setup in your target directory:
 
 ```bash
-# Download and run the setup script
+# Download the setup script
 wget https://raw.githubusercontent.com/kadavilrahul/file-versioning-inotify/main/setup_file_versioning.sh
-chmod +x setup_file_versioning.sh
-./setup_file_versioning.sh
+
+# Run the setup script
+bash setup_file_versioning.sh
 ```
 
 This script will:
@@ -38,7 +40,7 @@ This script will:
 3. Make them executable
 4. Clean up the cloned repository
 
-## Installation and usage
+### Option 2: Manual Installation
 1. Navigate to the directory you want to monitor:
 ```bash
 cd /path/to/your/directory  # Replace with the directory you want to monitor
@@ -46,34 +48,28 @@ cd /path/to/your/directory  # Replace with the directory you want to monitor
 
 2. Clone the repository:
 ```bash
-git clone https://github.com/YOUR_USERNAME/file-versioning-inotify.git
+git clone https://github.com/kadavilrahul/file-versioning-inotify.git
 ```
 
-3. Make scripts executable:
+3. Copy the scripts to your target directory:
 ```bash
-cd file-versioning-inotify
+cp file-versioning-inotify/file_versioning.sh file-versioning-inotify/check_versioning.sh .
+rm -rf file-versioning-inotify
 ```
 
-4. Start File Versioning (will monitor parent directory):
+## Usage
+
+1. Start File Versioning (will monitor current directory):
 ```bash
 nohup bash file_versioning.sh > file_versioning.log 2>&1 &
 ```
 
-Example:
-```bash
-# If you want to monitor ~/projects/my-code
-cd ~/projects/my-code
-git clone https://github.com/YOUR_USERNAME/file-versioning-inotify.git
-cd file-versioning-inotify
-nohup bash file_versioning.sh > file_versioning.log 2>&1 &
-```
-
-5. Check Status
+2. Check Status:
 ```bash
 bash check_versioning.sh
 ```
 
-6. Stop File Versioning
+3. Stop File Versioning:
 ```bash
 pkill -f file_versioning.sh
 ```

@@ -1,10 +1,12 @@
 #!/bin/bash
 
-# Get the directory where the script is located
+# Get the script's directory (for storing backups and PID file)
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# Use current working directory as the watch directory
+WATCH_DIR="$(pwd)"
+
 # Configuration
-WATCH_DIR="$SCRIPT_DIR"                # Directory to monitor
 BACKUP_DIR="$SCRIPT_DIR/backups"       # Directory for backups
 PID_FILE="$SCRIPT_DIR/.file_versioning.pid"
 

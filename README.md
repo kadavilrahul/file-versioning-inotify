@@ -8,6 +8,8 @@ A lightweight file versioning system that automatically creates backups of files
 - Simple process management with PID tracking
 - Easy to use start/stop/status commands
 - Non-intrusive background operation
+- Useful in cworking with AI-based code editors
+- Makes sure that your code is always backed up after code editor makes changes
 
 ## Prerequisites
 - Linux system with inotify-tools installed
@@ -19,31 +21,42 @@ sudo apt-get install inotify-tools
 sudo yum install inotify-tools
 ```
 
-## Installation
-1. Clone the repository:
+## Installation and usage
+1. Navigate to the directory you want to monitor:
+```bash
+cd /path/to/your/directory  # Replace with the directory you want to monitor
+```
+
+2. Clone the repository:
 ```bash
 git clone https://github.com/YOUR_USERNAME/file-versioning-inotify.git
+```
+
+3. Make scripts executable:
+```bash
 cd file-versioning-inotify
 ```
 
-2. Make scripts executable:
+4. Start File Versioning (will monitor parent directory):
 ```bash
-chmod +x file_versioning.sh check_versioning.sh
+nohup bash file_versioning.sh > file_versioning.log 2>&1 &
 ```
 
-## Usage
-
-### Start File Versioning
+Example:
 ```bash
-nohup ./file_versioning.sh > file_versioning.log 2>&1 &
+# If you want to monitor ~/projects/my-code
+cd ~/projects/my-code
+git clone https://github.com/YOUR_USERNAME/file-versioning-inotify.git
+cd file-versioning-inotify
+nohup bash file_versioning.sh > file_versioning.log 2>&1 &
 ```
 
-### Check Status
+5. Check Status
 ```bash
-./check_versioning.sh
+bash check_versioning.sh
 ```
 
-### Stop File Versioning
+6. Stop File Versioning
 ```bash
 pkill -f file_versioning.sh
 ```

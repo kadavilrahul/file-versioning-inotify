@@ -1,0 +1,12 @@
+# Backup directory
+backups/
+
+# PID file
+.file_versioning.pid
+
+# Log files
+*.log
+
+# System files
+.DS_Store
+Thumbs.db

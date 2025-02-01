@@ -29,10 +29,27 @@ For quick setup in your target directory:
 ```bash
 # Download the setup script
 wget https://raw.githubusercontent.com/kadavilrahul/file-versioning-inotify/main/setup_file_versioning.sh
+```
 
 # Run the setup script
+```bash
 bash setup_file_versioning.sh
 ```
+## Usage
+
+1. Start File Versioning (will monitor current directory):
+```bash
+nohup bash file_versioning.sh > file_versioning.log 2>&1 &
+```
+
+2. Check Status:
+```bash
+bash check_versioning.sh
+```
+
+3. Stop File Versioning:
+```bash
+pkill -f file_versioning.sh
 
 This script will:
 1. Clone the repository (if needed)
@@ -97,4 +114,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 MIT License - feel free to use and modify as needed.
 
 ## Author
-[Your Name]
+[Rahul Dinesh]

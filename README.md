@@ -13,11 +13,12 @@ A lightweight file versioning system that automatically creates backups of files
 
 ## Prerequisites
 - Linux system with inotify-tools installed
-```bash
 # Ubuntu/Debian
+```bash
 sudo apt-get install inotify-tools
-
+```
 # CentOS/RHEL
+```bash
 sudo yum install inotify-tools
 ```
 
@@ -26,28 +27,28 @@ sudo yum install inotify-tools
 ### Option 1: Quick Setup (Recommended)
 For quick setup in your target directory:
 
-# Download the setup script
+1. Download the setup script
 ```bash
 wget https://raw.githubusercontent.com/kadavilrahul/file-versioning-inotify/main/setup_file_versioning.sh
 ```
 
-# Run the setup script
+2. Run the setup script
 ```bash
 bash setup_file_versioning.sh
 ```
-## Usage
+3. Usage
 
-1. Start File Versioning (will monitor current directory):
+- Start File Versioning (will monitor current directory):
 ```bash
 nohup bash file_versioning.sh > file_versioning.log 2>&1 &
 ```
 
-2. Check Status:
+- Check Status:
 ```bash
 bash check_versioning.sh
 ```
 
-3. Stop File Versioning:
+- Stop File Versioning:
 ```bash
 pkill -f file_versioning.sh
 ```

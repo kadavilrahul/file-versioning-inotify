@@ -9,7 +9,7 @@ A lightweight file versioning system that automatically creates backups of files
 - Easy to use start/stop/status commands
 - Non-intrusive background operation
 - Useful in working with AI-based code editors
-- Makes sure that your code is always backed up after code editor makes changes
+- It makes sure that your code is always backed up after code editor makes changes
 
 ## Prerequisites
 - Linux system with inotify-tools installed

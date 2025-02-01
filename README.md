@@ -26,8 +26,8 @@ sudo yum install inotify-tools
 ### Option 1: Quick Setup (Recommended)
 For quick setup in your target directory:
 
-```bash
 # Download the setup script
+```bash
 wget https://raw.githubusercontent.com/kadavilrahul/file-versioning-inotify/main/setup_file_versioning.sh
 ```
 
@@ -50,6 +50,7 @@ bash check_versioning.sh
 3. Stop File Versioning:
 ```bash
 pkill -f file_versioning.sh
+```
 
 This script will:
 1. Clone the repository (if needed)

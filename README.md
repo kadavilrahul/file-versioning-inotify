@@ -21,6 +21,23 @@ sudo apt-get install inotify-tools
 sudo yum install inotify-tools
 ```
 
+## Quick Setup
+
+For quick setup in your target directory, you can use the provided setup script:
+
+```bash
+# Download and run the setup script
+wget https://raw.githubusercontent.com/kadavilrahul/file-versioning-inotify/main/setup_file_versioning.sh
+chmod +x setup_file_versioning.sh
+./setup_file_versioning.sh
+```
+
+This script will:
+1. Clone the repository (if needed)
+2. Copy the necessary scripts to your current directory
+3. Make them executable
+4. Clean up the cloned repository
+
 ## Installation and usage
 1. Navigate to the directory you want to monitor:
 ```bash

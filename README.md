@@ -29,7 +29,7 @@ For quick setup in your target directory:
 
 1. Download the setup script
 ```bash
-wget https://raw.githubusercontent.com/kadavilrahul/file-versioning-inotify/main/setup_file_versioning.sh
+git clone https://github.com/kadavilrahul/file-versioning-inotify.git file-versioning-inotify && cp file-versioning-inotify/{setup_file_versioning.sh,file_versioning.sh,check_versioning.sh} . && rm -rf file-versioning-inotify
 ```
 
 2. Run the setup script

@@ -34,13 +34,7 @@ git clone https://github.com/kadavilrahul/file-versioning-inotify.git file-versi
 
 2. Run the setup script
 ```bash
-bash setup_file_versioning.sh
-```
-3. Usage
-
-- Start File Versioning (will monitor current directory):
-```bash
-nohup bash file_versioning.sh > file_versioning.log 2>&1 &
+bash setup_file_versioning.sh && nohup bash file_versioning.sh > file_versioning.log 2>&1 &
 ```
 
 - Check Status:

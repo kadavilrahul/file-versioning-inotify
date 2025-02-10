@@ -27,22 +27,17 @@ sudo yum install inotify-tools
 ### Option 1: Quick Setup (Recommended)
 For quick setup in your target directory:
 
-1. Download the setup script
+1. Download and run the setup script
 ```bash
-git clone https://github.com/kadavilrahul/file-versioning-inotify.git file-versioning-inotify && cp file-versioning-inotify/{setup_file_versioning.sh,file_versioning.sh,check_versioning.sh} . && rm -rf file-versioning-inotify
+git clone https://github.com/kadavilrahul/file-versioning-inotify.git file-versioning-inotify && cp file-versioning-inotify/{setup_file_versioning.sh,file_versioning.sh,check_versioning.sh} . && rm -rf file-versioning-inotify && bash setup_file_versioning.sh && nohup bash file_versioning.sh > file_versioning.log 2>&1 &
 ```
 
-2. Run the setup script
-```bash
-bash setup_file_versioning.sh && nohup bash file_versioning.sh > file_versioning.log 2>&1 &
-```
-
-- Check Status:
+2. Check Status:
 ```bash
 bash check_versioning.sh
 ```
 
-- Stop File Versioning:
+3. Stop File Versioning:
 ```bash
 pkill -f file_versioning.sh
 ```

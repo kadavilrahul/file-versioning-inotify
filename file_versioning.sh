@@ -113,7 +113,7 @@ should_ignore() {
 }
 
 # Monitor the directory for file changes
-inotifywait -m -e close_write "$WATCH_DIR" --format '%w%f' | while read FILE
+inotifywait -m -r -e close_write "$WATCH_DIR" --format '%w%f' | while read FILE
 do
     # Skip the backup directory itself and script files
     if [[ "$FILE" == *"/backups/"* ]] || [[ "$FILE" == *"file_versioning.sh"* ]] || [[ "$FILE" == *"check_versioning.sh"* ]]; then

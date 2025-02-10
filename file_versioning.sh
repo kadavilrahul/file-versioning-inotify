@@ -27,16 +27,101 @@ fi
 # Ensure the backup directory exists
 mkdir -p "$BACKUP_DIR"
 
+# Create default .versioningignore if it doesn't exist
+VERSIONING_IGNORE="$WATCH_DIR/.versioningignore"
+if [ ! -f "$VERSIONING_IGNORE" ]; then
+    cat > "$VERSIONING_IGNORE" << 'EOL'
+# Default .versioningignore file
+# Add patterns of files and directories to ignore during versioning
+
+# System and temporary files
+.DS_Store
+*.tmp
+*.temp
+*.swp
+*~
+
+# Common build and dependency directories
+node_modules/
+build/
+dist/
+target/
+__pycache__/
+*.pyc
+
+# IDE and editor directories
+.idea/
+.vscode/
+.settings/
+
+# Log files
+*.log
+logs/
+
+# Version control directories
+.git/
+.svn/
+
+# Add your custom ignore patterns below this line
+EOL
+    echo "Created default .versioningignore file at: $VERSIONING_IGNORE"
+fi
+
 echo "Starting file versioning system..."
 echo "Watching directory: $WATCH_DIR"
 echo "Backup directory: $BACKUP_DIR"
 echo "PID: $$"
+
+# Function to check if a file should be ignored
+should_ignore() {
+    local file="$1"
+    local ignore_file="$WATCH_DIR/.versioningignore"
+    
+    # If .versioningignore doesn't exist, don't ignore anything
+    if [ ! -f "$ignore_file" ]; then
+        return 1
+    fi
+    
+    # Get the relative path of the file from the watch directory
+    local rel_path="${file#$WATCH_DIR/}"
+    
+    # Check each pattern in .versioningignore
+    while IFS= read -r pattern || [ -n "$pattern" ]; do
+        # Skip empty lines and comments
+        [[ -z "$pattern" || "$pattern" =~ ^[[:space:]]*# ]] && continue
+        
+        # Trim whitespace
+        pattern=$(echo "$pattern" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+        
+        # Convert glob pattern to regex
+        regex=$(echo "$pattern" | sed 's/\./\\./g' | sed 's/\*/[^\/]*/g' | sed 's/\?/[^\/]/g')
+        
+        # If pattern ends with /, it's a directory pattern
+        if [[ "$pattern" == */ ]]; then
+            regex="^${regex}.*"
+        else
+            regex="^${regex}$"
+        fi
+        
+        # Check if file matches the pattern
+        if [[ "$rel_path" =~ $regex ]]; then
+            return 0
+        fi
+    done < "$ignore_file"
+    
+    return 1
+}
 
 # Monitor the directory for file changes
 inotifywait -m -e close_write "$WATCH_DIR" --format '%w%f' | while read FILE
 do
     # Skip the backup directory itself and script files
     if [[ "$FILE" == *"/backups/"* ]] || [[ "$FILE" == *"file_versioning.sh"* ]] || [[ "$FILE" == *"check_versioning.sh"* ]]; then
+        continue
+    fi
+    
+    # Check if file should be ignored based on .versioningignore
+    if should_ignore "$FILE"; then
         continue
     fi
     

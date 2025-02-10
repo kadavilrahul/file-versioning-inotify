@@ -53,6 +53,9 @@ update_gitignore() {
     if ! grep -q "backups/" "$gitignore"; then
         echo "backups/" >> "$gitignore"
     fi
+    if ! grep -q ".versioningignore" "$gitignore"; then
+        echo ".versioningignore" >> "$gitignore"
+    fi
 }
 
 # Update .gitignore in the destination directory

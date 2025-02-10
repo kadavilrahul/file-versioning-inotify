@@ -27,7 +27,7 @@ update_gitignore() {
 
     # Add the ignore patterns
     if ! grep -q "# Ignore shell scripts, log files, pid files and versioning ignore" "$gitignore"; then
-        echo "# Ignore shell scripts, log files, and pid files" >> "$gitignore"
+        echo "# Ignore shell scripts, log files, pid files and versioning ignore" >> "$gitignore"
     fi
     if ! grep -q "*.log" "$gitignore"; then
         echo "*.log" >> "$gitignore"

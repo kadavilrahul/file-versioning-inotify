@@ -27,17 +27,12 @@ update_gitignore() {
 
     # Create a temporary file with all desired entries
     cat > "$gitignore.tmp" << EOL
-# Ignore shell scripts, log files, pid files and versioning ignore
 *.log
 *.pid
 .versioningignore
-
-# Ignore specific shell script files
 setup_file_versioning.sh
 file_versioning.sh
 check_versioning.sh
-
-# Ignore backups folder
 backups/
 EOL
 

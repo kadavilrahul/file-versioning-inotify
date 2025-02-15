@@ -42,6 +42,8 @@ if [ ! -f "$VERSIONING_IGNORE" ]; then
 *~
 *cache.db*
 .aider*
+.file_versioning.pid*
+.versioningignore*
 
 # Common build and dependency directories
 node_modules/

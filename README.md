@@ -27,17 +27,19 @@ sudo yum install inotify-tools
 ### Option 1: Quick Setup (Recommended)
 For quick setup in your target directory:
 
-1. Download and run the setup script
+1. Go to the directory one level up of the directory to be watched so that files and beckups are not created in the project directory.
+
+2. Download and run the setup script
 ```bash
 git clone https://github.com/kadavilrahul/file-versioning-inotify.git file-versioning-inotify && cp file-versioning-inotify/{setup_file_versioning.sh,file_versioning.sh,check_versioning.sh} . && rm -rf file-versioning-inotify && bash setup_file_versioning.sh && (nohup bash file_versioning.sh > file_versioning.log 2>&1 &)
 ```
 
-2. Check Status:
+3. Check Status:
 ```bash
 bash check_versioning.sh
 ```
 
-3. Stop File Versioning:
+4. Stop File Versioning:
 ```bash
 pkill -f file_versioning.sh
 ```

@@ -40,6 +40,8 @@ if [ ! -f "$VERSIONING_IGNORE" ]; then
 *.temp
 *.swp
 *~
+*cache.db*
+.aider*
 
 # Common build and dependency directories
 node_modules/

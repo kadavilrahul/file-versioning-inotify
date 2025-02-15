@@ -30,7 +30,7 @@ update_gitignore() {
 *.log
 *.pid
 .versioningignore
-*.aider
+.aider*
 *cache.db
 *.gitignore
 *.versioningignore

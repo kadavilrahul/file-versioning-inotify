@@ -30,9 +30,11 @@ update_gitignore() {
 *.log
 *.pid
 .versioningignore
-*aider
-*.db
+*.aider
+*cache.db
 *.gitignore
+*.versioningignore
+*.db
 setup_file_versioning.sh
 file_versioning.sh
 check_versioning.sh

@@ -5,6 +5,7 @@ A lightweight file versioning system that automatically creates backups of files
 ## Features
 - Real-time file change monitoring using inotify
 - Automatic timestamped backups
+- Monitors current directory and subdirectories
 - Simple process management with PID tracking
 - Easy to use start/stop/status commands
 - Non-intrusive background operation
@@ -69,7 +70,7 @@ rm -rf file-versioning-inotify
 
 ## Usage
 
-1. Start File Versioning (will monitor current directory):
+1. Start File Versioning (will monitor current directory and sub directories):
 ```bash
 nohup bash file_versioning.sh > file_versioning.log 2>&1 &
 ```

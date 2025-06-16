@@ -34,17 +34,27 @@ For quick setup in your target directory:
 ```bash
 git clone https://github.com/kadavilrahul/file-versioning-inotify.git
 ```
-If needed use this command to copy files to root of project
+Copy the scripts from this directory to your target directory:
 ```bash
-cd file-versioning-inotify && cp file-versioning-inotify/{setup_file_versioning.sh,file_versioning.sh,check_versioning.sh} . && rm -rf file-versioning-inotify && bash setup_file_versioning.sh && (nohup bash file_versioning.sh > file_versioning.log 2>&1 &)
+cp /path/to/scripts_04/{setup_file_versioning.sh,file_versioning.sh,check_versioning.sh} .
 ```
 
-3. Check Status:
+3. Run the setup script:
+```bash
+bash setup_file_versioning.sh
+```
+
+4. Start the file versioning system:
+```bash
+nohup bash file_versioning.sh > file_versioning.log 2>&1 &
+```
+
+5. Check Status:
 ```bash
 bash check_versioning.sh
 ```
 
-4. Stop File Versioning:
+6. Stop File Versioning:
 ```bash
 pkill -f file_versioning.sh
 ```

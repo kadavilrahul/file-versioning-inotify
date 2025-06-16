@@ -32,7 +32,11 @@ For quick setup in your target directory:
 
 2. Download and run the setup script
 ```bash
-git clone https://github.com/kadavilrahul/file-versioning-inotify.git file-versioning-inotify && cp file-versioning-inotify/{setup_file_versioning.sh,file_versioning.sh,check_versioning.sh} . && rm -rf file-versioning-inotify && bash setup_file_versioning.sh && (nohup bash file_versioning.sh > file_versioning.log 2>&1 &)
+git clone https://github.com/kadavilrahul/file-versioning-inotify.git
+```
+If needed use this command to copy files to root of project
+```bash
+cd file-versioning-inotify && cp file-versioning-inotify/{setup_file_versioning.sh,file_versioning.sh,check_versioning.sh} . && rm -rf file-versioning-inotify && bash setup_file_versioning.sh && (nohup bash file_versioning.sh > file_versioning.log 2>&1 &)
 ```
 
 3. Check Status:

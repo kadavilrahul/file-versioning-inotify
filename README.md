@@ -36,7 +36,7 @@ git clone https://github.com/kadavilrahul/file-versioning-inotify.git
 ```
 Copy the scripts from this directory to your target directory:
 ```bash
-cp /path/to/scripts_04/{setup_file_versioning.sh,file_versioning.sh,check_versioning.sh} .
+cp /file-versioning-inotify/{setup_file_versioning.sh,file_versioning.sh,check_versioning.sh} .
 ```
 
 3. Run the setup script:

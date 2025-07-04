@@ -11,6 +11,7 @@ A lightweight file versioning system that automatically creates backups of files
 - Non-intrusive background operation
 - Useful in working with AI-based code editors
 - It makes sure that your code is always backed up after code editor makes changes
+- Start on system boot
 
 ## Prerequisites
 - Linux system with inotify-tools installed
@@ -97,6 +98,28 @@ bash check_versioning.sh
 3. Stop File Versioning:
 ```bash
 pkill -f file_versioning.sh
+```
+
+## Systemd Service Management
+
+1. Enable the service to start on boot:
+```bash
+sudo systemctl enable file_versioning.service
+```
+
+2. Start the service:
+```bash
+sudo systemctl start file_versioning.service
+```
+
+3. Stop the service:
+```bash
+sudo systemctl stop file_versioning.service
+```
+
+4. Check the service status:
+```bash
+sudo systemctl status file_versioning.service
 ```
 
 ## File Organization

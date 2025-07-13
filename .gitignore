@@ -1,8 +1,8 @@
 # Backup directory
 backups/
 
-# PID file
-.file_versioning.pid
+# PID files
+*.pid
 
 # Log files
 *.log
@@ -10,3 +10,5 @@ backups/
 # System files
 .DS_Store
 Thumbs.db
+
+

@@ -67,7 +67,7 @@ show_main_menu() {
     echo "0.  Exit"
     echo ""
     
-    print_color $YELLOW "Enter your choice [0-8]: "
+    read -p $'\033[1;33mEnter your choice [0-8]: \033[0m' choice
 }
 
 # Function for single location menu
@@ -84,8 +84,7 @@ single_location_menu() {
         echo "0. Back to main menu"
         echo ""
         
-        print_color $YELLOW "Enter your choice [0-6]: "
-        read -r choice
+        read -p $'\033[1;33mEnter your choice [0-6]: \033[0m' choice
         
         case $choice in
             1)
@@ -154,8 +153,7 @@ multi_location_menu() {
         echo "0. Back to main menu"
         echo ""
         
-        print_color $YELLOW "Enter your choice [0-6]: "
-        read -r choice
+        read -p $'\033[1;33mEnter your choice [0-6]: \033[0m' choice
         
         case $choice in
             1)
@@ -214,8 +212,7 @@ location_management_menu() {
         echo "0. Back to main menu"
         echo ""
         
-        print_color $YELLOW "Enter your choice [0-4]: "
-        read -r choice
+        read -p $'\033[1;33mEnter your choice [0-4]: \033[0m' choice
         
         case $choice in
             1)
@@ -283,8 +280,7 @@ log_menu() {
         echo "6. Clear log files"
         echo "0. Back to main menu"
         echo ""
-        print_color $YELLOW "Enter your choice [0-6]: "
-        read -r choice
+        read -p $'\033[1;33mEnter your choice [0-6]: \033[0m' choice
         
         case $choice in
             1)
@@ -354,8 +350,7 @@ setup_menu() {
         echo "5. View configuration files"
         echo "0. Back to main menu"
         echo ""
-        print_color $YELLOW "Enter your choice [0-5]: "
-        read -r choice
+        read -p $'\033[1;33mEnter your choice [0-5]: \033[0m' choice
         
         case $choice in
             1)
@@ -423,8 +418,7 @@ backup_menu() {
         echo "6. Clean old backups (older than 7 days)"
         echo "0. Back to main menu"
         echo ""
-        print_color $YELLOW "Enter your choice [0-6]: "
-        read -r choice
+        read -p $'\033[1;33mEnter your choice [0-6]: \033[0m' choice
         
         case $choice in
             1)
@@ -533,7 +527,6 @@ main() {
     # Main menu loop
     while true; do
         show_main_menu
-        read -r choice
         
         case $choice in
             1)

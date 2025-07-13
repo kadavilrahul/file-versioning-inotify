@@ -3,9 +3,11 @@ backups/
 
 # PID files
 *.pid
+.*.pid
 
 # Log files
 *.log
+.*.log
 
 # System files
 .DS_Store

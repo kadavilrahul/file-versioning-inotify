@@ -59,16 +59,46 @@ enable_autostart_service() {
     local service_file="/etc/systemd/system/file_versioning.service"
     local current_dir=$(pwd)
     
+    # Create startup script that launches both services
+    local startup_script="$current_dir/start_all_versioning.sh"
+    cat > "$startup_script" << 'EOF'
+#!/bin/bash
+
+# Get script directory
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$SCRIPT_DIR"
+
+# Start single location monitoring in background
+echo "Starting single location file versioning..."
+nohup bash file_versioning.sh > file_versioning.log 2>&1 &
+
+# Wait a moment for single location to initialize
+sleep 2
+
+# Start multi-location monitoring if locations file exists and has content
+if [ -f ".versioning_locations" ] && [ -s ".versioning_locations" ]; then
+    echo "Starting multi-location file versioning..."
+    nohup bash multi_location_versioning.sh > multi_versioning.log 2>&1 &
+else
+    echo "No multi-location directories configured - skipping multi-location monitoring"
+fi
+
+# Keep the service running
+wait
+EOF
+
+    chmod +x "$startup_script"
+
     sudo tee "$service_file" > /dev/null << EOF
 [Unit]
-Description=File Versioning Service
+Description=File Versioning Service (Single + Multi Location)
 After=network.target
 
 [Service]
 Type=exec
 User=root
 WorkingDirectory=$current_dir
-ExecStart=/bin/bash $current_dir/file_versioning.sh
+ExecStart=/bin/bash $current_dir/start_all_versioning.sh
 Restart=always
 RestartSec=5
 StandardOutput=journal

@@ -1,5 +1,7 @@
 # Backup directory
 backups/
+.claude/
+
 
 # PID files
 *.pid

@@ -77,6 +77,17 @@ start_versioning() {
         return 0
     fi
     
+    # Check if locations file exists and has content
+    if [ ! -f "$LOCATIONS_FILE" ]; then
+        echo "Error: No locations file found. Please use manage_locations.sh to add directories to monitor."
+        return 1
+    fi
+    
+    if [ ! -s "$LOCATIONS_FILE" ]; then
+        echo "Error: Locations file is empty. Please use manage_locations.sh to add directories to monitor."
+        return 1
+    fi
+    
     echo "Starting multi-location file versioning..."
     nohup bash multi_location_versioning.sh > /dev/null 2>&1 &
     sleep 2

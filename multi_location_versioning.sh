@@ -161,6 +161,12 @@ if [ ! -f "$LOCATIONS_FILE" ]; then
     exit 1
 fi
 
+# Check if the locations file has content
+if [ ! -s "$LOCATIONS_FILE" ]; then
+    log_message "Locations file is empty. Please use manage_locations.sh to add directories to monitor."
+    exit 1
+fi
+
 log_message "Starting multi-location file versioning system..."
 log_message "PID: $$"
 

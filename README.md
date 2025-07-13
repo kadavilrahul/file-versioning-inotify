@@ -10,10 +10,7 @@ A comprehensive file versioning system that automatically creates backups of fil
 ### Quick Start with Interactive Interface
 1. Clone the repository:
 ```bash
-git clone https://github.com/kadavilrahul/file-versioning-inotify.git
-```
-```bash
-cd file-versioning-inotify
+git clone https://github.com/kadavilrahul/file-versioning-inotify.git && cd file-versioning-inotify
 ```
 
 2. Launch the interactive management interface:

@@ -1,106 +1,115 @@
 # File Versioning System with inotify
 
-A lightweight file versioning system that automatically creates backups of files when they are modified, using Linux's inotify for file system monitoring.
-
-## Features
-- Real-time file change monitoring using inotify
-- Automatic timestamped backups
-- Monitors current directory and subdirectories
-- Simple process management with PID tracking
-- Easy to use start/stop/status commands
-- Non-intrusive background operation
-- Useful in working with AI-based code editors
-- It makes sure that your code is always backed up after code editor makes changes
-- Start on system boot
+A comprehensive file versioning system that automatically creates backups of files when they are modified, using Linux's inotify for file system monitoring. Supports both single-location and multi-location monitoring with an interactive management interface.
 
 ## Prerequisites
-- Linux system with inotify-tools installed
-# Ubuntu/Debian
-```bash
-sudo apt-get install inotify-tools
-```
-# CentOS/RHEL
-```bash
-sudo yum install inotify-tools
-```
+- Linux system
 
 ## Installation
 
-### Option 1: Quick Setup (Recommended)
-For quick setup in your target directory:
-
-1. Go to the directory one level up of the directory to be watched so that files and beckups are not created in the project directory.
-
-2. Download and run the setup script
+### Quick Start with Interactive Interface
+1. Clone the repository:
 ```bash
 git clone https://github.com/kadavilrahul/file-versioning-inotify.git
 ```
 ```bash
 cd file-versioning-inotify
 ```
-If needed copy the scripts from this directory to your target directory:
+
+2. Launch the interactive management interface:
 ```bash
-cp file-versioning-inotify/{setup_file_versioning.sh,file_versioning.sh,check_versioning.sh} .
+bash run.sh
 ```
 
-3. Run the setup script:
+The interactive interface provides a comprehensive menu system for:
+- Single-location and multi-location versioning setup
+- Starting, stopping, and monitoring services
+- Managing monitored locations
+- Viewing logs and backup management
+- System configuration
+
+### Option 1: Single-Location Setup
+For monitoring a single directory:
+
+1. Run the single-location setup:
 ```bash
 bash setup_file_versioning.sh
 ```
 
-4. Start the file versioning system:
+2. Start monitoring:
 ```bash
 nohup bash file_versioning.sh > file_versioning.log 2>&1 &
 ```
 
-5. Check Status:
+3. Check status:
 ```bash
 bash check_versioning.sh
 ```
 
-6. Stop File Versioning:
+### Option 2: Multi-Location Setup
+For monitoring multiple directories simultaneously:
+
+1. Run the multi-location setup:
 ```bash
-pkill -f file_versioning.sh
+bash setup_multi_versioning.sh
 ```
 
-This script will:
-1. Clone the repository (if needed)
-2. Copy the necessary scripts to your current directory
-3. Make them executable
-4. Clean up the cloned repository
-
-### Option 2: Manual Installation
-1. Navigate to the directory you want to monitor:
+2. Add directories to monitor:
 ```bash
-cd /path/to/your/directory  # Replace with the directory you want to monitor
+./manage_locations.sh add /path/to/directory1
+./manage_locations.sh add /path/to/directory2
 ```
 
-2. Clone the repository:
+3. Start multi-location monitoring:
 ```bash
-git clone https://github.com/kadavilrahul/file-versioning-inotify.git
+./check_multi_versioning.sh start
 ```
 
-3. Copy the scripts to your target directory:
+4. Check status:
 ```bash
-cp file-versioning-inotify/file_versioning.sh file-versioning-inotify/check_versioning.sh .
-rm -rf file-versioning-inotify
+./check_multi_versioning.sh status
 ```
 
 ## Usage
 
-1. Start File Versioning (will monitor current directory and sub directories):
+### Interactive Management (Recommended)
+Launch the comprehensive management interface:
+```bash
+./run.sh
+```
+
+### Single-Location Commands
+1. **Start monitoring** (current directory and subdirectories):
 ```bash
 nohup bash file_versioning.sh > file_versioning.log 2>&1 &
 ```
 
-2. Check Status:
+2. **Check status**:
 ```bash
 bash check_versioning.sh
 ```
 
-3. Stop File Versioning:
+3. **Stop monitoring**:
 ```bash
 pkill -f file_versioning.sh
+```
+
+### Multi-Location Commands
+1. **Manage locations**:
+```bash
+./manage_locations.sh add /path/to/directory     # Add directory
+./manage_locations.sh remove /path/to/directory  # Remove directory
+./manage_locations.sh list                       # List all locations
+./manage_locations.sh clear                      # Clear all locations
+```
+
+2. **Control multi-location monitoring**:
+```bash
+./check_multi_versioning.sh start     # Start monitoring all locations
+./check_multi_versioning.sh stop      # Stop monitoring
+./check_multi_versioning.sh status    # Check status
+./check_multi_versioning.sh restart   # Restart monitoring
+./check_multi_versioning.sh locations # Show monitored locations
 ```
 
 ## Systemd Service Management
@@ -126,20 +135,101 @@ sudo systemctl status file_versioning.service
 ```
 
 ## File Organization
-- `file_versioning.sh`: Main script that monitors and creates backups
-- `check_versioning.sh`: Helper script to check if the versioning system is running
-- `backups/`: Directory where backups are stored (created automatically)
-- `.file_versioning.pid`: PID file for process management (created automatically)
+
+### Core Scripts
+- `run.sh`: Interactive management interface with color-coded menus
+- `file_versioning.sh`: Single-location monitoring script
+- `multi_location_versioning.sh`: Multi-location monitoring script
+- `check_versioning.sh`: Single-location status checker
+- `check_multi_versioning.sh`: Multi-location status and control script
+- `manage_locations.sh`: Location management for multi-location setup
+
+### Setup Scripts
+- `setup_file_versioning.sh`: Single-location setup and configuration
+- `setup_multi_versioning.sh`: Multi-location setup and initialization
+
+### Configuration Files
+- `.versioning_locations`: List of directories for multi-location monitoring
+- `.versioningignore`: Patterns of files/directories to ignore during versioning
+- `.gitignore`: Git ignore patterns for the project
+
+### Runtime Files (Auto-generated)
+- `backups/`: Directory where backups are stored
+- `.file_versioning.pid`: PID file for single-location monitoring
+- `.multi_versioning.pid`: PID file for multi-location monitoring
+- `file_versioning.log`: Single-location activity log
+- `multi_versioning.log`: Multi-location activity log
 
 ## Backup Format
-- Backups are stored in the `backups` directory
+- Backups are stored in the `backups/` directory within each monitored location
 - Naming format: `original_filename_YYYY_MM_DD_HH:MM:SS`
 - Example: `document.txt_2025_02_01_14:53:51`
+- Each monitored directory maintains its own backup folder
 
 ## Configuration
-Edit `file_versioning.sh` to customize:
-- `WATCH_DIR`: Directory to monitor (default: script location)
-- `BACKUP_DIR`: Directory for storing backups (default: backups/ subdirectory)
+
+### Ignore Patterns (.versioningignore)
+The system automatically creates a `.versioningignore` file in each monitored directory with sensible defaults:
+
+```bash
+# System and temporary files
+.DS_Store
+*.tmp
+*.temp
+*.swp
+*~
+*cache.db*
+.aider*
+
+# Build and dependency directories
+node_modules/
+build/
+dist/
+target/
+__pycache__/
+*.pyc
+
+# IDE directories
+.idea/
+.vscode/
+.settings/
+
+# Log files and version control
+*.log
+logs/
+.git/
+.svn/
+backups/
+```
+
+## Troubleshooting
+
+### Common Issues
+1. **inotify-tools not found**: Install with `sudo apt-get install inotify-tools`
+2. **Permission denied**: Ensure scripts are executable with `chmod +x *.sh`
+3. **Process not stopping**: Use `pkill -f versioning` to force stop
+4. **Backup directory full**: Use the backup management tools in `run.sh`
+
+### Log Analysis
+- Single-location logs: `file_versioning.log`
+- Multi-location logs: `multi_versioning.log`
+- Use `tail -f <logfile>` for real-time monitoring
+
+## Features
+- **Real-time file change monitoring** using inotify
+- **Automatic timestamped backups** with format: `filename_YYYY_MM_DD_HH:MM:SS`
+- **Single-location versioning** - Monitor current directory and subdirectories
+- **Multi-location versioning** - Monitor multiple directories simultaneously
+- **Interactive management interface** with color-coded menu system
+- **Smart ignore patterns** with `.versioningignore` support
+- **Process management** with PID tracking and status monitoring
+- **Location management** - Add, remove, list monitored directories
+- **Log management** with detailed activity tracking
+- **Backup management** with cleanup and organization tools
+- **Non-intrusive background operation**
+- **Systemd service support** for automatic startup
+- **Useful for AI-based code editors** - ensures code is always backed up
+- **Cross-platform compatibility** (Linux systems with inotify)
 
 ## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.

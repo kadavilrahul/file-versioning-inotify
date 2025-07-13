@@ -3,6 +3,12 @@
 # Interactive File Versioning Management Script
 # Provides a menu-driven interface for all versioning operations
 
+# Installation commands for required dependencies:
+# Ubuntu/Debian
+# sudo apt-get install inotify-tools
+# CentOS/RHEL
+# sudo yum install inotify-tools
+
 # Color codes for better UI
 RED='\033[0;31m'
 GREEN='\033[0;32m'

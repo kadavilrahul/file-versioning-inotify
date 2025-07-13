@@ -57,20 +57,23 @@ show_main_menu() {
     
     print_color $GREEN "File Versioning Management Menu:"
     echo ""
-    echo "MONITORING CONTROLS:"
-    echo "1.  Start Single Location Monitoring    - Monitor current directory for file changes"
-    echo "2.  Start Multi-Location Monitoring     - Monitor multiple directories simultaneously"
-    echo "3.  Stop All Monitoring                 - Stop all active file monitoring processes"
-    echo "4.  Restart All Monitoring              - Restart both single and multi-location monitoring"
+    echo "┌────────────────────────────────────────────────────────────────────────────────────┐"
+    echo "│                          MAIN MONITORING CONTROLS                                  │"
+    echo "├────────────────────────────────────────────────────────────────────────────────────┤"
+    echo "│ 1.  View Current Status                 - Check all monitoring processes status    │"
+    echo "│ 2.  Start Single Location Monitoring    - Monitor current directory for changes    │"
+    echo "│ 3.  Start Multi-Location Monitoring     - Monitor multiple directories             │"
+    echo "│ 4.  Stop All Monitoring                 - Stop all active file monitoring          │"
+    echo "│ 5.  Restart All Monitoring              - Restart both monitoring systems          │"
+    echo "└────────────────────────────────────────────────────────────────────────────────────┘"
     echo ""
     echo "LOCATION MANAGEMENT:"
-    echo "5.  Add Location                        - Add directory to multi-location monitoring"
-    echo "6.  Remove Location                     - Remove directory from multi-location monitoring"
-    echo "7.  List All Locations                  - Show all monitored directories"
-    echo "8.  Clear All Locations                 - Remove all directories from monitoring"
+    echo "6.  Add Location                        - Add directory to multi-location monitoring"
+    echo "7.  Remove Location                     - Remove directory from monitoring"
+    echo "8.  List All Locations                  - Show all monitored directories"
+    echo "9.  Clear All Locations                 - Remove all directories from monitoring"
     echo ""
     echo "STATUS & MONITORING:"
-    echo "9.  View Current Status                 - Check all monitoring processes status"
     echo "10. View Recent Activity                - Show recent file changes from logs"
     echo "11. View Detailed Logs                  - Show detailed activity from all logs"
     echo "12. Clear All Logs                      - Remove all log files"
@@ -408,23 +411,28 @@ main() {
         case $choice in
             # MONITORING CONTROLS
             1)
+                print_header
+                show_status
+                read -p "Press Enter to continue..."
+                ;;
+            2)
                 print_color $GREEN "Starting single location monitoring..."
                 ./check_versioning.sh start
                 read -p "Press Enter to continue..."
                 ;;
-            2)
+            3)
                 print_color $GREEN "Starting multi-location monitoring..."
                 ./check_multi_versioning.sh start
                 read -p "Press Enter to continue..."
                 ;;
-            3)
+            4)
                 print_color $RED "Stopping all monitoring processes..."
                 ./check_versioning.sh stop 2>/dev/null
                 ./check_multi_versioning.sh stop 2>/dev/null
                 print_color $GREEN "All monitoring stopped."
                 read -p "Press Enter to continue..."
                 ;;
-            4)
+            5)
                 print_color $YELLOW "Restarting all monitoring..."
                 ./check_versioning.sh stop 2>/dev/null
                 ./check_multi_versioning.sh stop 2>/dev/null
@@ -436,7 +444,7 @@ main() {
                 ;;
             
             # LOCATION MANAGEMENT
-            5)
+            6)
                 print_color $GREEN "Add Location:"
                 echo "Enter the full path of the directory to monitor:"
                 read -r path
@@ -447,7 +455,7 @@ main() {
                 fi
                 read -p "Press Enter to continue..."
                 ;;
-            6)
+            7)
                 print_color $RED "Remove Location:"
                 echo "Enter the full path of the directory to remove:"
                 read -r path
@@ -458,13 +466,13 @@ main() {
                 fi
                 read -p "Press Enter to continue..."
                 ;;
-            7)
+            8)
                 print_color $BLUE "All Monitored Locations:"
                 echo ""
                 ./manage_locations.sh list
                 read -p "Press Enter to continue..."
                 ;;
-            8)
+            9)
                 print_color $RED "Clear All Locations:"
                 echo "Are you sure you want to clear all monitored locations? (y/N)"
                 read -r confirm
@@ -478,11 +486,6 @@ main() {
                 ;;
             
             # STATUS & MONITORING
-            9)
-                print_header
-                show_status
-                read -p "Press Enter to continue..."
-                ;;
             10)
                 print_color $BLUE "Recent Activity (last 20 lines):"
                 echo ""

@@ -1,0 +1,41 @@
+# Default .versioningignore file
+# Add patterns of files and directories to ignore during versioning
+
+# System and temporary files
+.DS_Store
+*.tmp
+*.temp
+*.swp
+*~
+*cache.db*
+.aider*
+.file_versioning.pid*
+.multi_versioning.pid*
+.versioningignore*
+.versioning_locations*
+
+# Common build and dependency directories
+node_modules/
+build/
+dist/
+target/
+__pycache__/
+*.pyc
+
+# IDE and editor directories
+.idea/
+.vscode/
+.settings/
+
+# Log files
+*.log
+logs/
+
+# Version control directories
+.git/
+.svn/
+
+# Backup directories
+backups/
+
+# Add your custom ignore patterns below this line

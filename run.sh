@@ -29,7 +29,7 @@ print_color() {
 print_header() {
     clear
     print_color $CYAN "=================================================="
-    print_color $CYAN "    File Versioning Management System"
+    print_color $CYAN "    AI-Enhanced File Versioning Management"
     print_color $CYAN "    $(TZ='Asia/Kolkata' date '+%Y-%m-%d %H:%M:%S IST')"
     print_color $CYAN "=================================================="
     echo ""
@@ -41,13 +41,28 @@ show_status() {
     echo ""
     
     # Single location status
-    print_color $BLUE "Single Location Versioning:"
+    print_color $BLUE "AI-Enhanced Single Location Versioning:"
     ./check_versioning.sh
     echo ""
     
     # Multi-location status
     print_color $BLUE "Multi-Location Versioning:"
     ./check_multi_versioning.sh status
+    echo ""
+    
+    # AI features status
+    print_color $BLUE "AI Protection Features:"
+    if [[ -f "file_versioning.log" ]]; then
+        local ai_backups=$(grep -c "\[AI\]" file_versioning.log 2>/dev/null || echo "0")
+        local normal_backups=$(grep -c "\[NORMAL\]" file_versioning.log 2>/dev/null || echo "0")
+        echo "  AI session backups: $ai_backups"
+        echo "  Normal backups: $normal_backups"
+    fi
+    
+    if [[ -d "backups/snapshots" ]]; then
+        local snapshots=$(find backups/snapshots -maxdepth 1 -type d -name "*_*" 2>/dev/null | wc -l)
+        echo "  Available snapshots: $snapshots"
+    fi
     echo ""
 }
 
@@ -203,6 +218,8 @@ other_options_menu() {
         echo "11. Find Recent Backups                 - Show backups from last hour"
         echo "12. Find Backups by Pattern             - Search backups by filename"
         echo "13. Clean Old Backups                   - Remove backups older than 7 days"
+        echo "14. AI Snapshot Management              - Create/restore snapshots"
+        echo "15. View AI vs Normal Backups           - Show backup organization"
         echo ""
         echo "SYSTEM SETUP:"
         echo "14. Run Single Location Setup           - Configure single location monitoring"
@@ -690,6 +707,106 @@ backup_menu() {
     done
 }
 
+
+# Function for AI snapshot management
+ai_snapshot_menu() {
+    while true; do
+        print_header
+        print_color $GREEN "=== AI SNAPSHOT MANAGEMENT ==="
+        echo ""
+        echo "1. Create initial snapshot (all existing files)"
+        echo "2. Create session snapshot (pre-AI editing)"
+        echo "3. List all snapshots"
+        echo "4. Restore from snapshot"
+        echo "5. View snapshot details"
+        echo "0. Back to backup menu"
+        echo ""
+        read -p "Enter your choice (0-5): " choice
+        
+        case $choice in
+            1)
+                print_color $BLUE "Creating initial snapshot..."
+                ./ai_snapshot_manager.sh initial
+                ;;
+            2)
+                print_color $BLUE "Creating session snapshot..."
+                ./ai_snapshot_manager.sh session
+                ;;
+            3)
+                print_color $BLUE "Available snapshots:"
+                ./ai_snapshot_manager.sh list
+                ;;
+            4)
+                print_color $BLUE "Available snapshots:"
+                ./ai_snapshot_manager.sh list
+                echo ""
+                read -p "Enter snapshot directory name to restore: " snapshot_name
+                if [[ -n "$snapshot_name" ]]; then
+                    ./ai_snapshot_manager.sh restore "backups/snapshots/$snapshot_name"
+                fi
+                ;;
+            5)
+                print_color $BLUE "Available snapshots:"
+                ./ai_snapshot_manager.sh list
+                echo ""
+                read -p "Enter snapshot directory name to view: " snapshot_name
+                if [[ -n "$snapshot_name" && -f "backups/snapshots/$snapshot_name/SNAPSHOT_INFO.txt" ]]; then
+                    cat "backups/snapshots/$snapshot_name/SNAPSHOT_INFO.txt"
+                else
+                    echo "Snapshot info not found."
+                fi
+                ;;
+            0)
+                return
+                ;;
+            *)
+                print_color $RED "Invalid option. Please try again."
+                ;;
+        esac
+        
+        echo ""
+        read -p "Press Enter to continue..."
+    done
+}
+
+# Function to show backup organization
+show_backup_organization() {
+    print_color $BLUE "=== BACKUP ORGANIZATION ==="
+    echo ""
+    
+    if [[ -d "backups" ]]; then
+        echo "Backup Structure:"
+        echo "backups/"
+        
+        if [[ -d "backups/regular" ]]; then
+            local regular_count=$(find backups/regular -type f 2>/dev/null | wc -l)
+            echo "├── regular/ ($regular_count files) - Normal editing backups"
+        fi
+        
+        if [[ -d "backups/ai-sessions" ]]; then
+            local ai_count=$(find backups/ai-sessions -type f 2>/dev/null | wc -l)
+            echo "├── ai-sessions/ ($ai_count files) - AI editor backups"
+        fi
+        
+        if [[ -d "backups/snapshots" ]]; then
+            local snapshot_count=$(find backups/snapshots -maxdepth 1 -type d -name "*_*" 2>/dev/null | wc -l)
+            echo "└── snapshots/ ($snapshot_count snapshots) - Full system snapshots"
+        fi
+        
+        echo ""
+        echo "Recent Activity:"
+        if [[ -f "file_versioning.log" ]]; then
+            tail -5 file_versioning.log | grep "Backup created" || echo "No recent backup activity"
+        else
+            echo "No log file found"
+        fi
+    else
+        echo "No backup directory found"
+    fi
+    
+    echo ""
+    read -p "Press Enter to continue..."
+}
 
 # Main script execution
 main() {

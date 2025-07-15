@@ -1,94 +1,347 @@
-# File Versioning System with inotify
+# AI-Enhanced File Versioning System
 
-A comprehensive file versioning system that automatically creates backups of files when they are modified, using Linux's inotify for file system monitoring. Supports both single-location and multi-location monitoring with an interactive management interface.
+A comprehensive file versioning system with **AI code editor protection** that automatically creates backups when files are modified. Features enhanced monitoring, smart backup organization, and snapshot/restore capabilities specifically designed for AI editing sessions.
 
-## Prerequisites
-- Linux system
+## Table of Contents
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [AI Protection Features](#ai-protection-features)
+- [File Organization](#file-organization)
+- [Configuration](#configuration)
+- [Troubleshooting](#troubleshooting)
 
-## Installation
+## Quick Start
 
-### Quick Start with Interactive Interface
-1. Clone the repository:
+### Interactive Interface (Recommended)
 ```bash
-git clone https://github.com/kadavilrahul/file-versioning-inotify.git && cd file-versioning-inotify
+git clone https://github.com/kadavilrahul/file-versioning-inotify.git
 ```
+```bash
+cd file-versioning-inotify
 
-2. Launch the interactive management interface:
 ```bash
 bash run.sh
 ```
 
-The interactive interface provides a unified menu system with 23 organized options:
-- **Monitoring Controls** (1-4): Start, stop, restart single/multi-location monitoring
-- **Location Management** (5-8): Add, remove, list, clear monitored directories
-- **Status & Monitoring** (9-12): View current status, logs, and activity
-- **Backup Management** (13-18): View, count, clean, and search backup files
-- **System Setup** (19-23): Configure system, check prerequisites, view configuration
+### Direct Usage
+```bash
+# Start AI-enhanced monitoring
+./file_versioning.sh
 
+# Create initial snapshot
+./ai_snapshot_manager.sh initial
+
+# Create pre-AI session snapshot
+./ai_snapshot_manager.sh session
+```
+
+## Features
+
+### AI Code Editor Protection
+- **Auto-detects AI editors** (aider, cursor, copilot, continue, codeium)
+- **Smart backup organization** (AI sessions vs normal editing)
+- **Enhanced event monitoring** (CREATE, MODIFY, CLOSE_WRITE, MOVED_TO)
+- **Content deduplication** (avoids identical backups)
+- **Session snapshots** for easy rollback
+
+### Organized Backup Structure
+```
+backups/
+├── regular/        # Normal editing backups
+├── ai-sessions/    # AI editor session backups
+└── snapshots/      # Full system snapshots
+```
+
+### Core Features
+- **Real-time monitoring** using Linux inotify
+- **Multi-location support** - Monitor multiple directories
+- **Interactive management** - Comprehensive menu system
+- **Systemd integration** - Auto-start on boot
+- **Smart ignore patterns** - Configurable file exclusions
+
+## Installation
+
+### Prerequisites
+- Linux system with inotify support
+- `inotify-tools` package
+
+### Setup Options
+
+#### Option 1: Single-Location Setup
+```bash
+# Install dependencies
+sudo apt-get install inotify-tools
+
+# Setup single location monitoring
+./setup_file_versioning.sh
+
+# Start monitoring
+nohup ./file_versioning.sh > file_versioning.log 2>&1 &
+
+# Check status
+./check_versioning.sh
+```
+
+#### Option 2: Multi-Location Setup
+```bash
+# Setup multi-location monitoring
+./setup_multi_versioning.sh
+
+# Add directories to monitor
+./manage_locations.sh add /path/to/directory1
+./manage_locations.sh add /path/to/directory2
+
+# Start monitoring
+./check_multi_versioning.sh start
+
+# Check status
+./check_multi_versioning.sh status
+```
+
+## Usage
+
+### Interactive Management (Recommended)
+```bash
+./run.sh
+```
+
+**Main Menu Options:**
+- **Monitoring Controls** (1-8): Start/stop/restart single/multi-location monitoring
+- **Location Management**: Add, remove, list monitored directories  
+- **Backup Management**: View, count, clean, and search backup files
+- **AI Features**: Snapshot management and backup organization
+- **System Setup**: Configure system, check prerequisites, service management
+
+### Command Line Usage
+
+#### Single-Location Commands
+```bash
+# Start monitoring current directory
+./file_versioning.sh
+
+# Check status
+./check_versioning.sh
+
+# Stop monitoring
+./check_versioning.sh stop
+
+# Restart monitoring
+./check_versioning.sh restart
+```
+
+#### Multi-Location Commands
+```bash
+# Manage locations
+./manage_locations.sh add /path/to/directory     # Add directory
+./manage_locations.sh remove /path/to/directory  # Remove directory
+./manage_locations.sh list                       # List all locations
+./manage_locations.sh clear                      # Clear all locations
+
+# Control monitoring
+./check_multi_versioning.sh start     # Start monitoring all locations
+./check_multi_versioning.sh stop      # Stop monitoring
+./check_multi_versioning.sh status    # Check status
+./check_multi_versioning.sh restart   # Restart monitoring
+```
+
+#### Systemd Service Management
+```bash
+# Enable auto-start on boot
+sudo systemctl enable file_versioning.service
+
+# Start/stop service
+sudo systemctl start file_versioning.service
+sudo systemctl stop file_versioning.service
+
+# Check service status
+sudo systemctl status file_versioning.service
+```
+
+## AI Protection Features
+
+### Snapshot Management
+```bash
+# Create initial backup of all existing files
+./ai_snapshot_manager.sh initial
+
+# Create pre-AI editing session snapshot
+./ai_snapshot_manager.sh session
+
+# List available snapshots
+./ai_snapshot_manager.sh list
+
+# Restore from specific snapshot
+./ai_snapshot_manager.sh restore snapshots/SESSION_2025_01_15_14:30:25
+
+# View snapshot details
+./ai_snapshot_manager.sh list
+```
+
+### AI Detection & Smart Backups
+- **Automatic detection** of AI editor processes (aider, cursor, copilot, etc.)
+- **High-frequency backups** during AI sessions
+- **Event-tagged backups**: `filename_AI_CREATE_2025_01_15_14:30:25`
+- **Session-specific organization** for easy tracking
+- **Content deduplication** to avoid identical backups
+
+### Backup Organization
+- **AI Session Backups**: Stored in `backups/ai-sessions/` with `AI_` prefix
+- **Normal Backups**: Stored in `backups/regular/` with `NORMAL_` prefix
+- **Snapshots**: Full directory snapshots in `backups/snapshots/`
 
 ## File Organization
 
 ### Core Scripts
-- `run.sh`: Interactive management interface with color-coded menus
-- `file_versioning.sh`: Single-location monitoring script
-- `multi_location_versioning.sh`: Multi-location monitoring script
-- `check_versioning.sh`: Single-location status checker with start/stop/restart commands
-- `check_multi_versioning.sh`: Multi-location status and control script with validation
-- `manage_locations.sh`: Location management for multi-location setup
+| Script | Purpose |
+|--------|---------|
+| `run.sh` | Interactive management interface with color-coded menus |
+| `file_versioning.sh` | AI-enhanced single-location monitoring |
+| `ai_snapshot_manager.sh` | Snapshot creation and restore capabilities |
+| `multi_location_versioning.sh` | Multi-location monitoring script |
+| `check_versioning.sh` | Single-location status and control |
+| `check_multi_versioning.sh` | Multi-location status and control |
+| `manage_locations.sh` | Location management for multi-location setup |
 
 ### Setup Scripts
-- `setup_file_versioning.sh`: Single-location setup and configuration
-- `setup_multi_versioning.sh`: Multi-location setup and initialization
+| Script | Purpose |
+|--------|---------|
+| `setup_file_versioning.sh` | Single-location setup and configuration |
+| `setup_multi_versioning.sh` | Multi-location setup and initialization |
 
 ### Configuration Files
-- `.versioning_locations`: List of directories for multi-location monitoring (excluded from git)
-- `.versioningignore`: Patterns of files/directories to ignore during versioning
-- `.gitignore`: Git ignore patterns for the project
+| File | Purpose |
+|------|---------|
+| `.versioningignore` | Patterns of files/directories to ignore |
+| `.versioning_locations` | List of directories for multi-location monitoring |
+| `file_versioning.log` | Single-location activity log |
+| `multi_versioning.log` | Multi-location activity log |
 
 ### Runtime Files (Auto-generated)
-- `backups/`: Directory where backups are stored
-- `.file_versioning.pid`: PID file for single-location monitoring
-- `.multi_versioning.pid`: PID file for multi-location monitoring
-- `file_versioning.log`: Single-location activity log
-- `multi_versioning.log`: Multi-location activity log
+- `backups/regular/` - Normal editing backups
+- `backups/ai-sessions/` - AI editor session backups  
+- `backups/snapshots/` - Full system snapshots
+- `.file_versioning.pid` - Single-location PID file
+- `.multi_versioning.pid` - Multi-location PID file
 
-## Backup Format
-- Backups are stored in the `backups/` directory within each monitored location
-- Naming format: `original_filename_YYYY_MM_DD_HH:MM:SS`
-- Example: `document.txt_2025_02_01_14:53:51`
-- Each monitored directory maintains its own backup folder
+## Configuration
 
+### Ignore Patterns (.versioningignore)
+The system automatically creates enhanced ignore patterns:
+
+```bash
+# AI Editor specific files
+.cursor/
+.copilot/
+.aider*
+.continue/
+.ai-session/
+*.ai-backup
+
+# System and temporary files
+.DS_Store
+*.tmp
+*.temp
+*.swp
+*~
+*cache.db*
+
+# Build and dependency directories
+node_modules/
+build/
+dist/
+target/
+__pycache__/
+*.pyc
+
+# IDE directories
+.idea/
+.vscode/
+.settings/
+
+# Log files and version control
+*.log
+logs/
+.git/
+.svn/
+backups/
+```
+
+### Backup Format
+- **Regular backups**: `filename_NORMAL_SAVE_2025_01_15_14:30:25`
+- **AI session backups**: `filename_AI_CREATE_2025_01_15_14:30:25`
+- **Event types**: CREATE, MODIFY, SAVE, MOVE
+- **Snapshots**: Full directory structure preserved with manifest
 
 ## Troubleshooting
 
 ### Common Issues
-1. **inotify-tools not found**: Install with `sudo apt-get install inotify-tools`
-2. **Permission denied**: Ensure scripts are executable with `chmod +x *.sh`
-3. **Process not stopping**: Use `pkill -f versioning` to force stop
-4. **Backup directory full**: Use the backup management tools in `run.sh`
-5. **Multi-location won't start**: Ensure `.versioning_locations` file exists and contains valid directory paths
-6. **Empty locations file**: Add directories using the location management menu (options 5-8)
+| Issue | Solution |
+|-------|----------|
+| `inotify-tools not found` | Install: `sudo apt-get install inotify-tools` |
+| `Permission denied` | Make executable: `chmod +x *.sh` |
+| `Process not stopping` | Force stop: `pkill -f versioning` |
+| `No AI detection` | Check if AI editor process is running with `ps aux \| grep -E "(aider\|cursor\|copilot)"` |
+| `Backup directory full` | Use cleanup tools in `run.sh` menu option 13 |
+| `Multi-location won't start` | Ensure `.versioning_locations` exists with valid paths |
+| `Empty locations file` | Add directories using `./manage_locations.sh add <path>` |
 
 ### Log Analysis
-- Single-location logs: `file_versioning.log`
-- Multi-location logs: `multi_versioning.log`
-- Use `tail -f <logfile>` for real-time monitoring
+```bash
+# View recent activity
+tail -f file_versioning.log
 
-## Features
-- **Real-time file change monitoring** using inotify
-- **Automatic timestamped backups** with format: `filename_YYYY_MM_DD_HH:MM:SS`
-- **Single-location versioning** - Monitor current directory and subdirectories
-- **Multi-location versioning** - Monitor multiple directories simultaneously
-- **Unified interactive interface** with comprehensive 23-option menu system
-- **Smart ignore patterns** with `.versioningignore` support
-- **Process management** with PID tracking and status monitoring
-- **Location management** with validation - Add, remove, list monitored directories
-- **Log management** with detailed activity tracking
-- **Backup management** with cleanup and organization tools
-- **Non-intrusive background operation**
-- **Systemd service support** for automatic startup
-- **Useful for AI-based code editors** - ensures code is always backed up
-- **Cross-platform compatibility** (Linux systems with inotify)
+# Check AI vs normal backup activity
+grep "\[AI\]" file_versioning.log
+grep "\[NORMAL\]" file_versioning.log
+
+# Monitor real-time changes
+tail -f file_versioning.log | grep "Backup created"
+
+# View multi-location logs
+tail -f multi_versioning.log
+```
+
+### Performance Tips
+- Use `.versioningignore` to exclude large directories (node_modules, build folders)
+- Regular cleanup of old backups using menu option 13
+- Monitor disk usage with backup management tools
+- Use snapshots for major checkpoints rather than continuous backup
+
+### Service Debugging
+```bash
+# Check if service is enabled
+sudo systemctl is-enabled file_versioning.service
+
+# View service logs
+sudo journalctl -u file_versioning.service -f
+
+# Restart service
+sudo systemctl restart file_versioning.service
+```
+
+## Advanced Usage
+
+### Custom AI Editor Integration
+Add custom AI editor detection by modifying the `detect_ai_activity()` function in `file_versioning.sh`:
+
+```bash
+# Add your custom AI editor
+pgrep -f "your_ai_editor" >/dev/null 2>&1 && ai_processes="$ai_processes your_ai_editor"
+```
+
+### Backup Retention Policies
+- **Automatic cleanup**: Old backups (7+ days) via menu option 13
+- **Manual cleanup**: `find backups/ -type f -mtime +N -delete`
+- **Snapshot management**: Keep important session snapshots, clean others
+
+### Integration with Version Control
+The system works alongside Git and other VCS:
+- Backups are independent of Git commits
+- `.versioningignore` excludes `.git/` directory
+- Useful for tracking changes between commits
+- Provides additional safety net for AI-generated changes
 
 ## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.

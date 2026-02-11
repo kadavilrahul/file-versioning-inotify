@@ -20,6 +20,7 @@ git clone https://github.com/kadavilrahul/file-versioning-inotify.git
 ```
 ```bash
 cd file-versioning-inotify
+```
 
 ```bash
 bash run.sh
